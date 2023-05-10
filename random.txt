@@ -1,0 +1,23 @@
+{
+  "id": {
+    "N": "0"
+  },
+  "dishType": {
+    "S": ""
+  },
+  "title": {
+    "S": ""
+  },
+  "image": {
+    "S": ""
+  },
+  "instructions": {
+    "S": ""
+  },
+  "ingredients": {
+    "SS": [
+      "",
+      ""
+    ]
+  }
+}
