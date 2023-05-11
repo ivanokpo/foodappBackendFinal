@@ -78,8 +78,8 @@ router.get('/recipes/searched/:search', async(request, response) => {
 router.post('/recipes/add', async(request, response) => {
     
         const { success, data } = await createOrUpdate(request.body)
+        //response.setHeader('Content-Type', 'image/jpeg')
         
-
         if(success){
             return response.json({success, data})
         }

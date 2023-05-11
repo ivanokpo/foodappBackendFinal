@@ -1,8 +1,13 @@
 import {db, Table} from './db.config.js'
 import AWS from 'aws-sdk'
 
+import { createClient } from 'pexels';
+
 // Create or Update users
 const createOrUpdate = async (data) =>{
+    const clientPexel = createClient(process.env.PEXELS_KEY)
+    const query = `${data.title}`;
+
     const paramsForId = {
         TableName: Table
     }
@@ -14,17 +19,6 @@ const createOrUpdate = async (data) =>{
               : 0
             return maxId + 1
           }
-    
-
-
-    // const generateId = () => {
-    //         const maxId = Object.keys(data).length > 0
-    //           ? Math.max(Object.keys(data).length)
-    //           : 0
-    //         return maxId + 1
-    //       }
-
-    let updatedData = AWS.DynamoDB.Converter.input(data, true);
 
     const recipe = {
         "id": {N: generateId()},
@@ -40,7 +34,7 @@ const createOrUpdate = async (data) =>{
                 "title": `${data.title}`,
                 "instructions": `${data.instructions}`,
                 "ingredients": `${data.ingredients}`,
-                "image": `${data.image}`,
+                "image": `${await clientPexel.photos.search({ query, per_page: 1 }).then(data => data.photos[0].src.original) }`,
                 "dishType": `${data.dishType}`
             }
     }
