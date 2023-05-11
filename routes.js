@@ -55,16 +55,19 @@ router.get('/recipes/searched/:search', async(request, response) => {
 
 
 //get by id
-/*router.get('/recipes/:id', async(request, response) => {
-    const requested = Number(request.params.id)
-    const searchItem = recipes.find(dish => dish.id === requested)
-    console.log(searchItem);
-    if (searchItem){
-        response.json(searchItem);
+router.get('/recipes/:id', async(request, response) => {
+    const id = Number(request.params.id)
+    const { success, data } = await getUserById(id)
+    console.log(data)
+ 
+    if (success){
+        response.json({data});
     } else {
+        console.log("not working")
         response.status(404).end()
       }
-})*/
+    
+})
 
 //delete recipe
 // router.delete('/recipes/delete/:id', async(request, response) => {
