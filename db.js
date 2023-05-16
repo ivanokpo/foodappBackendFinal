@@ -140,6 +140,30 @@ const deleteUserById = async(value, key = 'id' ) => {
     }
 }
 
+const updateUser = async (data) => {
+    // Set the parameters.
+    
+    const newInstructions = JSON.stringify(data.instructions)
+    console.log(newInstructions)
+    const params = {
+        TableName: Table,
+        Key: {
+            "id":
+                {N: data.id}
+        },
+
+        Item: {
+        ...data
+        }
+        
+        };
+    try {
+        const { Item = {} } =  await db.put(params).promise()
+        return { success: true, data: Item }
+    } catch (error) {
+        return {  success: false, data: null}        
+    }
+  };
 
 export {
     createOrUpdate,
@@ -147,5 +171,6 @@ export {
     getUserById,
     getUserByDish,
     getUserByTitle,
-    deleteUserById
+    deleteUserById,
+    updateUser
 }

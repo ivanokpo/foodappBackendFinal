@@ -1,5 +1,5 @@
 import express from 'express'
-import { createOrUpdate, getUserByTitle, deleteUserById, getUserById, getUserByDish, readAllUsers } from './db.js'
+import { createOrUpdate, getUserByTitle, deleteUserById, getUserById, getUserByDish, readAllUsers, updateUser } from './db.js'
 //import AWS from 'aws-sdk'
 
 const router = express.Router()
@@ -58,7 +58,7 @@ router.get('/recipes/searched/:search', async(request, response) => {
 router.get('/recipes/:id', async(request, response) => {
     const id = Number(request.params.id)
     const { success, data } = await getUserById(id)
-    console.log(data)
+    
  
     if (success){
         response.json({data});
@@ -93,12 +93,12 @@ router.post('/recipes/add', async(request, response) => {
 
 
 // Update User by ID
-router.put('/user/:id', async(req, res) => {
-    const user = req.body
-    const { id } = req.params
-    user.id = parseInt(id)
-
-    const { success, data } = await createOrUpdate(user)
+router.put('/recipes/update/:id', async(req, res) => {
+    
+    // const { id } = req.params
+    // user.id = parseInt(id)
+    console.log(req.body)
+    const { success, data } = await updateUser(req.body)
 
     if(success){
         return res.json({success, data})
