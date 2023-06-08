@@ -3,11 +3,10 @@ import AWS from 'aws-sdk'
 
 import { createClient } from 'pexels';
 
-// Create or Update users
+//create or update recipe
 const createOrUpdate = async (data) =>{
     const clientPexel = createClient(process.env.PEXELS_KEY)
     const query = `${data.title}`;
-
     const paramsForId = {
         TableName: Table
     }
@@ -38,10 +37,7 @@ const createOrUpdate = async (data) =>{
                 "dishType": `${data.dishType}`
             }
     }
-//use AWS code commit
-    console.log(generateId())
-   
-    
+
     try{
         await db.put(params).promise()
         return { success: true }
@@ -50,27 +46,24 @@ const createOrUpdate = async (data) =>{
     }
 }
 
-// Read all users
-const readAllUsers = async()=>{
+//read all recipes
+const readAllRecipes = async()=>{
     const params = {
         TableName: Table
     }
-
     try{
         const { Items = [] } = await db.scan(params).promise()
-        console.log("h")
         return { success: true, data: Items }
 
     } catch(error){
         return { success: false, data: null }
     }
-
 }
 
 
     
-// Read Users by dish
-const getUserByDish = async (value, key = 'dish') => {
+//read recipes by dish
+const getRecipeByDish = async (value, key = 'dish') => {
     const params = {
         TableName: Table,
         FilterExpression : 'dishType = :dishType',
@@ -86,7 +79,8 @@ const getUserByDish = async (value, key = 'dish') => {
     }
 }
 
-const getUserByTitle = async (value, key = 'title') => {
+
+const getRecipeByTitle = async (value, key = 'title') => {
     const params = {
         TableName: Table,
         ScanFilter: {
@@ -106,8 +100,8 @@ const getUserByTitle = async (value, key = 'title') => {
     }
 }
 
-// Read Users by ID
-const getUserById = async (value, key = 'id') => {
+//read recipes by ID
+const getRecipeById = async (value, key = 'id') => {
     const params = {
         TableName: Table,
         Key: {
@@ -122,8 +116,8 @@ const getUserById = async (value, key = 'id') => {
     }
 }
 
-// Delete User by ID
-const deleteUserById = async(value, key = 'id' ) => { 
+//delete recipe by ID
+const deleteRecipeById = async(value, key = 'id' ) => { 
     const params = {
         TableName: Table,
         Key: {
@@ -140,9 +134,9 @@ const deleteUserById = async(value, key = 'id' ) => {
     }
 }
 
-const updateUser = async (data) => {
-    // Set the parameters.
-    
+//update recipe
+const updateRecipe = async (data) => {
+    // Set the parameters
     const newInstructions = JSON.stringify(data.instructions)
     console.log(newInstructions)
     const params = {
@@ -167,10 +161,10 @@ const updateUser = async (data) => {
 
 export {
     createOrUpdate,
-    readAllUsers,
-    getUserById,
-    getUserByDish,
-    getUserByTitle,
-    deleteUserById,
-    updateUser
+    readAllRecipes,
+    getRecipeById,
+    getRecipeByDish,
+    getRecipeByTitle,
+    deleteRecipeById,
+    updateRecipe
 }
